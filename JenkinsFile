@@ -29,13 +29,19 @@ pipeline {
     }
 }
 
-    stage('Static Code Analysis') {
-      steps {
-        withCredentials([string(credentialsId: 'sonarcred', variable: 'SONAR_AUTH_TOKEN')]) {
-          sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
+   stage('Static Code Analysis') {
+    steps {
+        dir('springboot') {
+            withCredentials([string(credentialsId: 'sonarcred', variable: 'SONAR_AUTH_TOKEN')]) {
+                sh '''
+                    mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+                      -Dsonar.login=$SONAR_AUTH_TOKEN \
+                      -Dsonar.host.url=$SONAR_URL
+                '''
+            }
         }
-      }
     }
+}
 
     stage('Build and Push Docker Image') {
       steps {
