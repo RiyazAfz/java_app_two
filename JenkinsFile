@@ -31,7 +31,7 @@ pipeline {
 
    stage('Static Code Analysis') {
     steps {
-        dir('springboot') {
+        dir('spring-boot-app') {
             withCredentials([string(credentialsId: 'sonarcred', variable: 'SONAR_AUTH_TOKEN')]) {
                 sh '''
                     mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
